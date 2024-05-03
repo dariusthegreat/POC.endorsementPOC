@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<PublishAot>False</PublishAot>
+		<InvariantGlobalization>false</InvariantGlobalization>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="AWSSDK.S3" Version="3.7.305.28" />
+		<PackageReference Include="AWSSDK.SecretsManager" Version="3.7.302.27" />
+		<PackageReference Include="AWSSDK.SSO" Version="3.7.300.52" />
+		<PackageReference Include="AWSSDK.SSOOIDC" Version="3.7.301.47" />
+		<PackageReference Include="ImpromptuInterface" Version="8.0.4" />
+		<PackageReference Include="System.Runtime" Version="4.3.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\TechQ.DocumentManagement\TechQ.DocumentManagement.csproj" />
+		<ProjectReference Include="..\TechQ.Entities\TechQ.Entities.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Aspose.PDFProductFamily.license">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="IronPdf.license.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="$(SolutionDir)forms\**\*" CopyToOutputDirectory="Always" LinkBase="forms\" />
+	</ItemGroup>
+</Project>

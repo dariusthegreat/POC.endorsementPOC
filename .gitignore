@@ -396,3 +396,16 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+# IDE temp folders
+.idea/
+.vs/
+
+# Populated documents folder (we don't need these. We just need the original forms in the parent directory)
+forms/populated/
+
+
+# this is a 24MB+ file that gets generated when we serialize the entire DB Context to a JSON file. Even if GitHub did allow this, we don't need it in the repo.
+DbContext.json
+
