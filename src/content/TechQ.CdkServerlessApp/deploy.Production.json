@@ -1,0 +1,19 @@
+{
+  "AppName": "TechQLanding",
+  "ApiGatewayStage": "Prod",
+  "LambdaConfigs": [
+    {
+      "CodeSrcFolder": "TechQ.ServerlessAspDotNetApp",
+      "FunctionName": "TechQLanding",
+      "Handler": "TechQ.ServerlessAspDotNetApp::TechQ.ServerlessAspDotNetApp.LambdaEntryPoint::FunctionHandlerAsync",
+      "IsVpcJoined": true,
+      "IsDefaultHandler": true,
+      "ProxyPath": "/"
+    }
+  ],
+  "StackOwnershipDetails": {
+    "AlertRecipient": "nate@scrt.dev",
+    "Owner": "Nate Ferrell",
+    "Repo": "https://github.com/TechQ-com/techq.app.git"
+  }
+}

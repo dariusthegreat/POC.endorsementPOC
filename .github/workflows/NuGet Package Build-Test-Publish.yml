@@ -1,0 +1,28 @@
+# yaml-language-server $schema=https://json.schemastore.org/github-workflow.json
+name: NuGet Package Build-Test-Publish
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: read
+  checks: write
+  id-token: write
+  security-events: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  ######################## Build, Test, Publish ########################
+  BuildTestPublish:
+    name: NuGet Package - Build, Test, Publish
+    uses: TechQ-com/pipelines/.github/workflows/job-dotnet-publish-nuget-gpr.yml@main
+    needs: []
+    with:
+      sln-directory: src

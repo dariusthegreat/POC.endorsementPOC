@@ -1,0 +1,152 @@
+# yaml-language-server $schema=https://json.schemastore.org/github-workflow.json
+name: Build & Deploy CDK Serverless App
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  actions: read
+  checks: write
+  contents: read
+  id-token: write
+  security-events: write
+  pull-requests: write
+
+env:
+  CDK_MIN_VERSION: 2.132.0
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+jobs:
+  # changes:
+  #   name: Detect Changes
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     cdk: ${{ steps.changes.outputs.cdk }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: dorny/paths-filter@v3
+  #       id: changes
+  #       with:
+  #         filters: |
+  #           cdk:
+  #             - 'cdk/**'
+  #             - 'src/**'
+  ######################## LINT ########################
+  LintCDKScan:
+    name: CDK - Lint Scans
+    uses: TechQ-com/pipelines/.github/workflows/job-lint.yml@main
+    if: ${{ github.event.release == null && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') }}
+    with:
+      scan-directory: cdk/src
+      dotnet-version: 8.x
+  LintSrcScan:
+    name: Src - Lint Scans
+    uses: TechQ-com/pipelines/.github/workflows/job-lint.yml@main
+    if: ${{ github.event.release == null && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') }}
+    with:
+      scan-directory: src
+      dotnet-version: 8.x
+
+  ######################## SECURITY ########################
+  SecurityCdkScan:
+    name: CDK - Security Scans
+    uses: TechQ-com/pipelines/.github/workflows/job-security.yml@main
+    if: ${{ github.event.release == null && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') }}
+    with:
+      scan-directory: cdk/src
+      dotnet-version: 8.x
+  SecuritySrcScan:
+    name: Src - Security Scans
+    uses: TechQ-com/pipelines/.github/workflows/job-security.yml@main
+    if: ${{ github.event.release == null && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') }}
+    with:
+      scan-directory: src
+      dotnet-version: 8.x
+
+  ######################## BUILD - DEVELOPMENT ########################
+  BuildDev:
+    name: Build - Development
+    uses: TechQ-com/pipelines/.github/workflows/job-cdk-build.yml@main
+    if: ${{ github.event.release == null && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') }}
+    # if: ${{ github.event.release != null || github.event_name == 'pull_request' }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target-region: us-west-2
+            dotnet-version: 8.x
+    with:
+      cdk-directory: ./cdk
+      cdk-version: 2.132.0
+      dotnet-version: ${{ matrix.dotnet-version }}
+      target-environment: development
+      target-region: ${{ matrix.target-region }}
+      AWS_INFRA_CDK_ROLE_NAME: GitHubAppDeployRole
+      CDK_DEFAULT_ACCOUNT: ${{ vars.DEV_AWS_ACCOUNT_ID }}
+
+  ######################## BUILD - PRODUCTION ########################
+  BuildProd:
+    name: Build - Production
+    uses: TechQ-com/pipelines/.github/workflows/job-cdk-build.yml@main
+    if: ${{ github.event.release == null && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target-region: us-west-2
+            dotnet-version: 8.x
+    with:
+      cdk-directory: ./cdk
+      cdk-version: 2.132.0
+      dotnet-version: ${{ matrix.dotnet-version }}
+      target-environment: production
+      target-region: ${{ matrix.target-region }}
+      AWS_INFRA_CDK_ROLE_NAME: GitHubAppDeployRole
+      CDK_DEFAULT_ACCOUNT: ${{ vars.PRD_AWS_ACCOUNT_ID }}
+
+  ######################## DEPLOY - DEVELOPMENT ########################
+
+  DeployDev:
+    name: Deploy - Development
+    uses: TechQ-com/pipelines/.github/workflows/job-cdk-deploy.yml@main
+    if: ${{ github.event.release == null && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target-region: us-west-2
+            dotnet-version: 8.x
+    with:
+      cdk-directory: ./cdk
+      cdk-version: 2.132.0
+      dotnet-version: ${{ matrix.dotnet-version }}
+      target-environment: development
+      target-region: ${{ matrix.target-region }}
+      AWS_INFRA_CDK_ROLE_NAME: GitHubAppDeployRole
+      CDK_DEFAULT_ACCOUNT: ${{ vars.DEV_AWS_ACCOUNT_ID }}
+
+  ######################## DEPLOY - PRODUCTION ########################
+
+  DeployProd:
+    name: Deploy - Production
+    uses: TechQ-com/pipelines/.github/workflows/job-cdk-deploy.yml@main
+    if: ${{ github.event.release != null && github.event_name != 'pull_request' }}
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target-region: us-west-2
+            dotnet-version: 8.x
+    with:
+      cdk-directory: ./cdk
+      cdk-version: 2.132.0
+      dotnet-version: ${{ matrix.dotnet-version }}
+      target-environment: production
+      target-region: ${{ matrix.target-region }}
+      AWS_INFRA_CDK_ROLE_NAME: GitHubAppDeployRole
+      CDK_DEFAULT_ACCOUNT: ${{ vars.PRD_AWS_ACCOUNT_ID }}

@@ -1,0 +1,9 @@
+{
+  "name": "TechQ",
+  "short_name": "TechQ",
+  "theme_color": "#089669",
+  "background_color": "#1F2A38",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/"
+}

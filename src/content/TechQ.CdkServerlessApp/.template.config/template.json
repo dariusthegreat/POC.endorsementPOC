@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Nate Ferrell",
+  "classifications": [
+    "Common",
+    "Code"
+  ],
+  "identity": "TechQ.ServerlessAspDotNetApp",
+  "name": "TechQ Serverless ASP.Net App on AWS Lambda and API Gateway",
+  "shortName": "techq-serverless-aspdotnet",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "symbols": {
+    "ClassName": {
+      "type": "parameter",
+      "description": "The name of the code file and class.",
+      "datatype": "text",
+      "replaces": "ServerlessAspDotNetApp",
+      "fileRename": "ServerlessAspDotNetApp",
+      "defaultValue": "ServerlessAspDotNetApp"
+    }
+  }
+}

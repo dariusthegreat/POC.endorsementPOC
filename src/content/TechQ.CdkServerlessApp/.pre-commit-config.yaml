@@ -1,0 +1,50 @@
+exclude: &exclude (doc)
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+      - id: check-yaml
+      - id: debug-statements
+        exclude: *exclude
+      - id: destroyed-symlinks
+      - id: end-of-file-fixer
+        exclude: *exclude
+        files: \.(py|sh|rst|yml|yaml)$
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+        files: \.(py|sh|rst|yml|yaml)$
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.27.3
+    hooks:
+      - id: check-github-workflows
+        args: ["--verbose"]
+  - repo: local
+    hooks:
+      - id: dotnet-format-cdk
+        name: dotnet-format-cdk
+        entry: dotnet
+        args:
+          - format
+          - cdk/src
+        language: system
+        pass_filenames: false
+      - id: dotnet-format-src
+        name: dotnet-format-src
+        entry: dotnet
+        args:
+          - format
+          - src
+        language: system
+        pass_filenames: false

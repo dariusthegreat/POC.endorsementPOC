@@ -1,0 +1,80 @@
+{
+  "vpc-provider:account=354903695540:filter.tag:Name=aws-controltower-VPC:region=us-west-2:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0836579738782aa35",
+    "vpcCidrBlock": "10.0.0.0/16",
+    "ownerAccountId": "354903695540",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-01b842327be700972",
+            "cidr": "10.0.64.0/20",
+            "availabilityZone": "us-west-2a",
+            "routeTableId": "rtb-00b580ea04416da8b"
+          },
+          {
+            "subnetId": "subnet-026bf190701b3cb81",
+            "cidr": "10.0.48.0/20",
+            "availabilityZone": "us-west-2a",
+            "routeTableId": "rtb-0d2f447371c6c5b98"
+          },
+          {
+            "subnetId": "subnet-0cadd832b1b63942a",
+            "cidr": "10.0.16.0/20",
+            "availabilityZone": "us-west-2b",
+            "routeTableId": "rtb-0651ba344781a5a2c"
+          },
+          {
+            "subnetId": "subnet-0b69bb398299340d6",
+            "cidr": "10.0.32.0/20",
+            "availabilityZone": "us-west-2b",
+            "routeTableId": "rtb-098c3df1378bb5462"
+          },
+          {
+            "subnetId": "subnet-04c963d62ed01e840",
+            "cidr": "10.0.80.0/20",
+            "availabilityZone": "us-west-2c",
+            "routeTableId": "rtb-0d1b002de9529e590"
+          },
+          {
+            "subnetId": "subnet-0933043eb3ab21e10",
+            "cidr": "10.0.128.0/20",
+            "availabilityZone": "us-west-2c",
+            "routeTableId": "rtb-0ed00f1869537324b"
+          }
+        ]
+      },
+      {
+        "name": "Public",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-0d4f40ce87fb48801",
+            "cidr": "10.0.96.0/20",
+            "availabilityZone": "us-west-2a",
+            "routeTableId": "rtb-0b489b959f44c9ce6"
+          },
+          {
+            "subnetId": "subnet-00eac24283cc1a08a",
+            "cidr": "10.0.112.0/20",
+            "availabilityZone": "us-west-2b",
+            "routeTableId": "rtb-0b489b959f44c9ce6"
+          },
+          {
+            "subnetId": "subnet-06cf2704bc49fbe65",
+            "cidr": "10.0.0.0/20",
+            "availabilityZone": "us-west-2c",
+            "routeTableId": "rtb-0b489b959f44c9ce6"
+          }
+        ]
+      }
+    ]
+  },
+  "hosted-zone:account=354903695540:domainName=dev.techq.app:privateZone=false:region=us-west-2": {
+    "Id": "/hostedzone/Z056825021ITQPEMYMU22",
+    "Name": "dev.techq.app."
+  }
+}
